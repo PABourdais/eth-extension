@@ -75,7 +75,16 @@ const App = () => {
       minHeight="100vh" 
       bgcolor="#121212" 
     >
-      <Card sx={{ minWidth: 300, maxWidth: 400, padding: 3, textAlign: "center", bgcolor: "#1E1E1E", color: "white" }}>
+      <Card 
+        sx={{ 
+          minWidth: 350,
+          maxWidth: 500,
+          padding: 3, 
+          textAlign: "center", 
+          bgcolor: "#1E1E1E", 
+          color: "white" 
+        }}
+      >
         <CardContent>
           <Typography variant="h5" gutterBottom color="primary">
             Ethereum Prices
