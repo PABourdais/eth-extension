@@ -9,6 +9,18 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const savedData = localStorage.getItem("ethData");
+    if (savedData) {
+      const { ethUsd, ethBtc, ethUsdChange, timestamp } = JSON.parse(savedData);
+      const isDataFresh = Date.now() - timestamp < 30000;
+      if (isDataFresh) {
+        setEthUsd(ethUsd);
+        setEthBtc(ethBtc);
+        setEthUsdChange(ethUsdChange);
+        setLoading(false);
+        return;
+      }
+    }
     fetchPrices();
     const interval = setInterval(fetchPrices, 30000);
     return () => clearInterval(interval);
@@ -22,11 +34,25 @@ const App = () => {
         "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,btc&include_24hr_change=true"
       );
       if (!response.ok) throw new Error("Failed to fetch prices");
-      
+
       const data = await response.json();
-      setEthUsd(formatPrice(data.ethereum.usd));
-      setEthBtc(data.ethereum.btc.toFixed(8));
-      setEthUsdChange(data.ethereum.usd_24h_change);
+      const formattedEthUsd = formatPrice(data.ethereum.usd);
+      const formattedEthBtc = data.ethereum.btc.toFixed(8);
+      const ethUsdChangeValue = data.ethereum.usd_24h_change;
+
+      setEthUsd(formattedEthUsd);
+      setEthBtc(formattedEthBtc);
+      setEthUsdChange(ethUsdChangeValue);
+
+      localStorage.setItem(
+        "ethData",
+        JSON.stringify({
+          ethUsd: formattedEthUsd,
+          ethBtc: formattedEthBtc,
+          ethUsdChange: ethUsdChangeValue,
+          timestamp: Date.now(),
+        })
+      );
     } catch (error) {
       setError("Error fetching prices. Please try again.");
     } finally {
@@ -62,7 +88,7 @@ const App = () => {
             <>
               <Typography variant="h4" sx={{ marginBottom: 2 }}>
                 <Box display="flex" alignItems="center">
-                  {ethUsd}
+                  {ethUsd} USD
                   <Typography
                     variant="h6"
                     sx={{
@@ -70,7 +96,7 @@ const App = () => {
                       color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
                     }}
                   >
-                    {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
+                    {ethUsdChange !== null ? ethUsdChange.toFixed(2) + "%" : "N/A"}
                   </Typography>
                 </Box>
               </Typography>
