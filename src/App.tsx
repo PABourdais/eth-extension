@@ -77,8 +77,10 @@ const App = () => {
       display="flex" 
       justifyContent="center" 
       alignItems="center" 
+      flexDirection="column" 
       minHeight="100vh" 
       bgcolor="#121212" 
+      sx={{ width: 600 }}
     >
       <Card 
         sx={{ 
@@ -86,12 +88,12 @@ const App = () => {
           maxWidth: 600,
           padding: 3, 
           textAlign: "center", 
-          bgcolor: "#1E1E1E", 
+          bgcolor: "#121212", 
           color: "white" 
         }}
       >
         <CardContent>
-          <Typography variant="h5" gutterBottom color="primary">
+          <Typography variant="h5" gutterBottom color="primary" sx={{ marginBottom: 4 }}>
             Ethereum Prices
           </Typography>
           {loading ? (
@@ -132,6 +134,13 @@ const App = () => {
           )}
         </CardContent>
       </Card>
+      <Typography 
+        variant="body2" 
+        color="gray" 
+        sx={{ marginTop: 1 }}
+      >
+      Developed by Pierre-Alexandre Bourdais
+    </Typography>
     </Box>
   );
 };
