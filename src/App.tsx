@@ -106,7 +106,7 @@ const App = () => {
                 <Box display="flex" justifyContent="center" alignItems="center">
                   {ethUsd}
                   <Typography
-                    variant="h6"
+                    variant="body2"
                     sx={{
                       marginLeft: 1,
                       color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
@@ -120,7 +120,7 @@ const App = () => {
                 <Box display="flex"  justifyContent="center" alignItems="center">
                   ₿{ethBtc}
                   <Typography
-                    variant="h6"
+                    variant="body1"
                     sx={{
                       marginLeft: 1,
                       color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
@@ -147,8 +147,15 @@ const App = () => {
         color="gray" 
         sx={{ marginTop: 1 }}
       >
-      Developed by Pierre-Alexandre Bourdais
-    </Typography>
+        Developed by Pierre-Alexandre Bourdais
+      </Typography>
+      <Typography 
+        variant="body2" 
+        color="gray" 
+        sx={{ marginTop: 1, marginBottom: 2 }}
+      >
+        Powered by <a href="https://www.coingecko.com/" target="_blank" style={{ color: "#007bff", textDecoration: "none" }} rel="noreferrer">CoinGecko API</a>
+      </Typography>
     </Box>
   );
 };
