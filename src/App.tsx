@@ -102,7 +102,7 @@ const App = () => {
             <>
               <Typography variant="h4" sx={{ marginBottom: 2 }}>
                 <Box display="flex" justifyContent="center" alignItems="center">
-                  {ethUsd} USD
+                  {ethUsd}
                   <Typography
                     variant="h6"
                     sx={{
@@ -116,7 +116,7 @@ const App = () => {
               </Typography>
               <Typography variant="h4" sx={{ marginBottom: 2 }}>
                 <Box display="flex"  justifyContent="center" alignItems="center">
-                  {ethBtc} BTC
+                  ₿{ethBtc}
                   <Typography
                     variant="h6"
                     sx={{
