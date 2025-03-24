@@ -7,6 +7,7 @@ const App = () => {
   const [ethBtc, setEthBtc] = useState<string | number>("Loading...");
   const [ethUsdChange, setEthUsdChange] = useState<number | null>(null);
   const [ethBtcChange, setEthBtcChange] = useState<number | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -14,13 +15,14 @@ const App = () => {
     try {
       const savedData = localStorage.getItem("ethData");
       if (savedData) {
-        const { ethUsd, ethBtc, ethUsdChange, ethBtcChange, timestamp } = JSON.parse(savedData);
+        const { ethUsd, ethBtc, ethUsdChange, ethBtcChange, lastUpdated, timestamp } = JSON.parse(savedData);
         const isDataFresh = Date.now() - timestamp < 30000;
         if (isDataFresh) {
           setEthUsd(ethUsd);
           setEthBtc(ethBtc);
           setEthUsdChange(ethUsdChange);
           setEthBtcChange(ethBtcChange);
+          setLastUpdated(lastUpdated)
           setLoading(false);
           return;
         }
@@ -52,6 +54,7 @@ const App = () => {
       setEthBtc(formattedEthBtc);
       setEthUsdChange(ethUsdChangeValue);
       setEthBtcChange(ethBtcChangeValue);
+      setLastUpdated(new Date().toLocaleString());
 
       localStorage.setItem(
         "ethData",
@@ -147,6 +150,13 @@ const App = () => {
           >
             Refresh Data
           </Button>
+          <Typography 
+            variant="body2" 
+            color="gray" 
+            sx={{ marginTop: 1 }}
+          >
+            Last updated: {lastUpdated || "Fetching..."}
+        </Typography>
         </CardContent>
       </Card>
       <Typography 
