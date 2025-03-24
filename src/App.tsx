@@ -5,6 +5,7 @@ const App = () => {
   const [ethUsd, setEthUsd] = useState<string | number>("Loading...");
   const [ethBtc, setEthBtc] = useState<string | number>("Loading...");
   const [ethUsdChange, setEthUsdChange] = useState<number | null>(null);
+  const [ethBtcChange, setEthBtcChange] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -17,6 +18,7 @@ const App = () => {
         setEthUsd(ethUsd);
         setEthBtc(ethBtc);
         setEthUsdChange(ethUsdChange);
+        setEthBtcChange(ethBtcChange);
         setLoading(false);
         return;
       }
@@ -39,10 +41,12 @@ const App = () => {
       const formattedEthUsd = formatPrice(data.ethereum.usd);
       const formattedEthBtc = data.ethereum.btc.toFixed(8);
       const ethUsdChangeValue = data.ethereum.usd_24h_change;
+      const ethBtcChangeValue = data.ethereum.btc_24h_change;
 
       setEthUsd(formattedEthUsd);
       setEthBtc(formattedEthBtc);
       setEthUsdChange(ethUsdChangeValue);
+      setEthBtcChange(ethBtcChangeValue);
 
       localStorage.setItem(
         "ethData",
@@ -50,6 +54,7 @@ const App = () => {
           ethUsd: formattedEthUsd,
           ethBtc: formattedEthBtc,
           ethUsdChange: ethUsdChangeValue,
+          ethBtcChange: ethBtcChangeValue,
           timestamp: Date.now(),
         })
       );
@@ -77,8 +82,8 @@ const App = () => {
     >
       <Card 
         sx={{ 
-          minWidth: 350,
-          maxWidth: 500,
+          minWidth: 450,
+          maxWidth: 600,
           padding: 3, 
           textAlign: "center", 
           bgcolor: "#1E1E1E", 
@@ -96,7 +101,7 @@ const App = () => {
           ) : (
             <>
               <Typography variant="h4" sx={{ marginBottom: 2 }}>
-                <Box display="flex" alignItems="center">
+                <Box display="flex" justifyContent="center" alignItems="center">
                   {ethUsd} USD
                   <Typography
                     variant="h6"
@@ -109,7 +114,20 @@ const App = () => {
                   </Typography>
                 </Box>
               </Typography>
-              <Typography variant="h4" sx={{ marginBottom: 2 }}>{ethBtc} BTC</Typography>
+              <Typography variant="h4" sx={{ marginBottom: 2 }}>
+                <Box display="flex"  justifyContent="center" alignItems="center">
+                  {ethBtc} BTC
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      marginLeft: 1,
+                      color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
+                    }}
+                  >
+                    {ethBtcChange !== null ? ethBtcChange.toFixed(2) + "%" : "N/A"}
+                  </Typography>
+                </Box>
+              </Typography>
             </>
           )}
         </CardContent>
