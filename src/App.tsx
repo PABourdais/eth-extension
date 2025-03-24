@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, Typography, CircularProgress, Box, Button } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 const App = () => {
   const [ethUsd, setEthUsd] = useState<string | number>("Loading...");
@@ -10,18 +11,22 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const savedData = localStorage.getItem("ethData");
-    if (savedData) {
-      const { ethUsd, ethBtc, ethUsdChange, timestamp } = JSON.parse(savedData);
-      const isDataFresh = Date.now() - timestamp < 30000;
-      if (isDataFresh) {
-        setEthUsd(ethUsd);
-        setEthBtc(ethBtc);
-        setEthUsdChange(ethUsdChange);
-        setEthBtcChange(ethBtcChange);
-        setLoading(false);
-        return;
+    try {
+      const savedData = localStorage.getItem("ethData");
+      if (savedData) {
+        const { ethUsd, ethBtc, ethUsdChange, ethBtcChange, timestamp } = JSON.parse(savedData);
+        const isDataFresh = Date.now() - timestamp < 30000;
+        if (isDataFresh) {
+          setEthUsd(ethUsd);
+          setEthBtc(ethBtc);
+          setEthUsdChange(ethUsdChange);
+          setEthBtcChange(ethBtcChange);
+          setLoading(false);
+          return;
+        }
       }
+    } catch (error) {
+      console.warn("LocalStorage is not available or data is corrupted.");
     }
     fetchPrices();
     const interval = setInterval(fetchPrices, 30000);
@@ -59,7 +64,7 @@ const App = () => {
         })
       );
     } catch (error) {
-      setError("Error fetching prices. Please try again.");
+      setError(error instanceof Error ? error.message : "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -120,7 +125,7 @@ const App = () => {
                 <Box display="flex"  justifyContent="center" alignItems="center">
                   ₿{ethBtc}
                   <Typography
-                    variant="body1"
+                    variant="body2"
                     sx={{
                       marginLeft: 1,
                       color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
@@ -136,7 +141,9 @@ const App = () => {
             variant="contained" 
             color="primary" 
             onClick={fetchPrices} 
+            disabled={loading}
             sx={{ marginTop: 2 }}
+            aria-label="Refresh Ethereum prices"
           >
             Refresh Data
           </Button>
@@ -149,13 +156,15 @@ const App = () => {
       >
         Developed by Pierre-Alexandre Bourdais
       </Typography>
-      <Typography 
-        variant="body2" 
-        color="gray" 
-        sx={{ marginTop: 1, marginBottom: 2 }}
-      >
-        Powered by <a href="https://www.coingecko.com/" target="_blank" style={{ color: "#007bff", textDecoration: "none" }} rel="noreferrer">CoinGecko API</a>
-      </Typography>
+      <Tooltip title="Visit CoinGecko for cryptocurrency data" arrow>
+        <Typography 
+          variant="body2" 
+          color="gray" 
+          sx={{ marginTop: 1, marginBottom: 2 }}
+        >
+          Powered by <a href="https://www.coingecko.com/" target="_blank" style={{ color: "#007bff", textDecoration: "none" }} rel="noreferrer" aria-label="Visit CoinGecko website">CoinGecko API</a>
+        </Typography>
+      </Tooltip>
     </Box>
   );
 };
