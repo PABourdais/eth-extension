@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, CircularProgress, Box } from "@mui/material";
+import { Card, CardContent, Typography, CircularProgress, Box, Button } from "@mui/material";
 
 const App = () => {
   const [ethUsd, setEthUsd] = useState<string | number>("Loading...");
@@ -132,6 +132,14 @@ const App = () => {
               </Typography>
             </>
           )}
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={fetchPrices} 
+            sx={{ marginTop: 2 }}
+          >
+            Refresh Data
+          </Button>
         </CardContent>
       </Card>
       <Typography 
