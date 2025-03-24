@@ -3,7 +3,7 @@
   "short_name": "ETH extension",
   "name": "My ETH Extension",
   "version": "1.0",
-  "description": "A Chrome extension built with React, TypeScript, and Material UI.",
+  "description": "Track Ethereum prices in real-time with this lightweight Chrome extension. It provides live updates on ETH to USD and BTC prices, along with 24-hour percentage changes.",
   "action": {
     "default_popup": "index.html",
     "default_icon": "icon.png"
