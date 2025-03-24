@@ -110,7 +110,7 @@ const App = () => {
                       color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
                     }}
                   >
-                    {ethUsdChange !== null ? ethUsdChange.toFixed(2) + "%" : "N/A"}
+                    {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
                   </Typography>
                 </Box>
               </Typography>
@@ -124,7 +124,7 @@ const App = () => {
                       color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
                     }}
                   >
-                    {ethBtcChange !== null ? ethBtcChange.toFixed(2) + "%" : "N/A"}
+                    {ethBtcChange !== null ? "(" + ethBtcChange.toFixed(2) + "%)" : "N/A"}
                   </Typography>
                 </Box>
               </Typography>
