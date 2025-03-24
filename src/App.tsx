@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CardContent, Typography, CircularProgress, Box, Button, useMediaQuery } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import { CardContent, Typography, CircularProgress, Box, Button, useMediaQuery, Tooltip, Fade } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const App = () => {
@@ -120,36 +119,38 @@ const App = () => {
             ) : error ? (
               <Typography color="error">{error}</Typography>
             ) : (
-              <>
-                <Typography variant="h4" sx={{ marginBottom: 2 }}>
-                  <Box display="flex" justifyContent="center" alignItems="center">
-                    {ethUsd}
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        marginLeft: 1,
-                        color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
-                      }}
-                    >
-                      {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
-                    </Typography>
-                  </Box>
-                </Typography>
-                <Typography variant="h4" sx={{ marginBottom: 2 }}>
-                  <Box display="flex"  justifyContent="center" alignItems="center">
-                    ₿{ethBtc}
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        marginLeft: 1,
-                        color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
-                      }}
-                    >
-                      {ethBtcChange !== null ? "(" + ethBtcChange.toFixed(2) + "%)" : "N/A"}
-                    </Typography>
-                  </Box>
-                </Typography>
-              </>
+              <Fade in={!loading} timeout={500}>
+                <Box>
+                  <Typography variant="h4" sx={{ marginBottom: 2 }}>
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                      {ethUsd}
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          marginLeft: 1,
+                          color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
+                        }}
+                      >
+                        {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
+                      </Typography>
+                    </Box>
+                  </Typography>
+                  <Typography variant="h4" sx={{ marginBottom: 2 }}>
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                      ₿{ethBtc}
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          marginLeft: 1,
+                          color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
+                        }}
+                      >
+                        {ethBtcChange !== null ? "(" + ethBtcChange.toFixed(2) + "%)" : "N/A"}
+                      </Typography>
+                    </Box>
+                  </Typography>
+                </Box>
+              </Fade>
             )}
             <Button 
               variant="contained" 
