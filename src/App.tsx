@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, CircularProgress, Box, Button } from "@mui/material";
+import { CardContent, Typography, CircularProgress, Box, Button, useMediaQuery } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const App = () => {
   const [ethUsd, setEthUsd] = useState<string | number>("Loading...");
@@ -10,6 +11,13 @@ const App = () => {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = createTheme({
+    palette: {
+      mode: prefersDarkMode ? "dark" : "light",
+    },
+  });
 
   useEffect(() => {
     try {
@@ -81,101 +89,105 @@ const App = () => {
   };
 
   return (
-    <Box 
-      display="flex" 
-      justifyContent="center" 
-      alignItems="center" 
-      flexDirection="column" 
-      minHeight="100vh" 
-      bgcolor="#121212" 
-      sx={{ width: 600 }}
-    >
-      <Card 
+    <ThemeProvider theme={theme}>
+      <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        flexDirection="column" 
+        minHeight="100vh" 
         sx={{ 
-          minWidth: 450,
-          maxWidth: 600,
-          padding: 3, 
-          textAlign: "center", 
-          bgcolor: "#121212", 
-          color: "white" 
-        }}
+          width: 600,
+          bgcolor: theme.palette.background.paper,
+         }}
       >
-        <CardContent>
-          <Typography variant="h5" gutterBottom color="primary" sx={{ marginBottom: 4 }}>
-            Ethereum Prices
+        <Box 
+          sx={{ 
+            minWidth: 450,
+            maxWidth: 600,
+            padding: 3, 
+            textAlign: "center", 
+            bgcolor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+          }}
+        >
+          <CardContent>
+            <Typography variant="h5" gutterBottom color="primary" sx={{ marginBottom: 4 }}>
+              Ethereum Prices
+            </Typography>
+            {loading ? (
+              <CircularProgress color="secondary" />
+            ) : error ? (
+              <Typography color="error">{error}</Typography>
+            ) : (
+              <>
+                <Typography variant="h4" sx={{ marginBottom: 2 }}>
+                  <Box display="flex" justifyContent="center" alignItems="center">
+                    {ethUsd}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        marginLeft: 1,
+                        color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
+                      }}
+                    >
+                      {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
+                    </Typography>
+                  </Box>
+                </Typography>
+                <Typography variant="h4" sx={{ marginBottom: 2 }}>
+                  <Box display="flex"  justifyContent="center" alignItems="center">
+                    ₿{ethBtc}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        marginLeft: 1,
+                        color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
+                      }}
+                    >
+                      {ethBtcChange !== null ? "(" + ethBtcChange.toFixed(2) + "%)" : "N/A"}
+                    </Typography>
+                  </Box>
+                </Typography>
+              </>
+            )}
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={fetchPrices} 
+              disabled={loading}
+              sx={{ marginTop: 2 }}
+              aria-label="Refresh Ethereum prices"
+            >
+              Refresh Data
+            </Button>
+            <Typography 
+              variant="body2" 
+              color="gray" 
+              sx={{ marginTop: 1 }}
+            >
+              Last updated: {lastUpdated || "Fetching..."}
           </Typography>
-          {loading ? (
-            <CircularProgress color="secondary" />
-          ) : error ? (
-            <Typography color="error">{error}</Typography>
-          ) : (
-            <>
-              <Typography variant="h4" sx={{ marginBottom: 2 }}>
-                <Box display="flex" justifyContent="center" alignItems="center">
-                  {ethUsd}
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      marginLeft: 1,
-                      color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
-                    }}
-                  >
-                    {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
-                  </Typography>
-                </Box>
-              </Typography>
-              <Typography variant="h4" sx={{ marginBottom: 2 }}>
-                <Box display="flex"  justifyContent="center" alignItems="center">
-                  ₿{ethBtc}
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      marginLeft: 1,
-                      color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
-                    }}
-                  >
-                    {ethBtcChange !== null ? "(" + ethBtcChange.toFixed(2) + "%)" : "N/A"}
-                  </Typography>
-                </Box>
-              </Typography>
-            </>
-          )}
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={fetchPrices} 
-            disabled={loading}
-            sx={{ marginTop: 2 }}
-            aria-label="Refresh Ethereum prices"
-          >
-            Refresh Data
-          </Button>
-          <Typography 
-            variant="body2" 
-            color="gray" 
-            sx={{ marginTop: 1 }}
-          >
-            Last updated: {lastUpdated || "Fetching..."}
-        </Typography>
-        </CardContent>
-      </Card>
-      <Typography 
-        variant="body2" 
-        color="gray" 
-        sx={{ marginTop: 1 }}
-      >
-        Developed by Pierre-Alexandre Bourdais
-      </Typography>
-      <Tooltip title="Visit CoinGecko for cryptocurrency data" arrow>
+          </CardContent>
+        </Box>
         <Typography 
           variant="body2" 
           color="gray" 
-          sx={{ marginTop: 1, marginBottom: 2 }}
+          sx={{ marginTop: 1 }}
         >
-          Powered by <a href="https://www.coingecko.com/" target="_blank" style={{ color: "#007bff", textDecoration: "none" }} rel="noreferrer" aria-label="Visit CoinGecko website">CoinGecko API</a>
+          Developed by Pierre-Alexandre Bourdais
         </Typography>
-      </Tooltip>
-    </Box>
+        <Tooltip title="Visit CoinGecko for cryptocurrency data" arrow>
+          <Typography 
+            variant="body2" 
+            color="gray" 
+            sx={{ marginTop: 1, marginBottom: 2 }}
+          >
+            Powered by <a href="https://www.coingecko.com/" target="_blank" style={{ color: "#007bff", textDecoration: "none" }} rel="noreferrer" aria-label="Visit CoinGecko website">CoinGecko API</a>
+          </Typography>
+        </Tooltip>
+      </Box>
+    </ThemeProvider>
   );
 };
 
