@@ -216,7 +216,7 @@ const App = () => {
           </CardContent>
         </Box>
         <Typography variant="body2" color="gray" sx={{ marginTop: 1 }}>
-          Developed by Pierre-Alexandre Bourdais
+          Developed by Me ❤️
         </Typography>
         <Tooltip title="Visit CoinGecko for cryptocurrency data" arrow>
           <Typography
