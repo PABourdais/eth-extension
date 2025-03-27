@@ -128,7 +128,7 @@ const App = () => {
                         variant="body2"
                         sx={{
                           marginLeft: 1,
-                          color: ethUsdChange !== null && ethUsdChange < 0 ? "red" : "green",
+                          color: ethUsdChange !== null && ethUsdChange < 0 ? "#FF3131" : "#00FF00",
                         }}
                       >
                         {ethUsdChange !== null ? "(" + ethUsdChange.toFixed(2) + "%)" : "N/A"}
@@ -142,7 +142,7 @@ const App = () => {
                         variant="body2"
                         sx={{
                           marginLeft: 1,
-                          color: ethBtcChange !== null && ethBtcChange < 0 ? "red" : "green",
+                          color: ethBtcChange !== null && ethBtcChange < 0 ? "#FF3131" : "#00FF00",
                         }}
                       >
                         {ethBtcChange !== null ? "(" + ethBtcChange.toFixed(2) + "%)" : "N/A"}
