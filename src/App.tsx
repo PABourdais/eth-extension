@@ -115,7 +115,9 @@ const App = () => {
               Ethereum Prices
             </Typography>
             {loading ? (
-              <CircularProgress color="secondary" />
+              <Box display="flex" justifyContent="center" alignItems="center" minHeight="100px">
+                <CircularProgress color="secondary" />
+              </Box>
             ) : error ? (
               <Typography color="error">{error}</Typography>
             ) : (
